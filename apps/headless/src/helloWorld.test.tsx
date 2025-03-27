@@ -65,4 +65,14 @@ describe("Test Skia", () => {
       ColorType.RGBA_F32
     );
   });
+
+
+  it("can make an image from bytes", async () => {
+    const {Skia} = getSkiaExports();
+    const imageData = Skia.Data.fromBytes(Uint8Array.from([0, 255, 255, 0]));
+
+    const image = Skia.Image.MakeImage({colorType: ColorType.Gray_8, width: 2, height: 2}, imageData, 2);
+    
+    expect(image).not.toBeNull();
+  });
 });

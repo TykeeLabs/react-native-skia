@@ -181,6 +181,15 @@ const pushShaders = (recorder: BaseRecorder, shaders: Node<any>[]) => {
   });
 };
 
+const pushBlenders = (recorder: BaseRecorder, blenders: Node<any>[]) => {
+  blenders.forEach((blender) => {
+    if (blender.children.length > 0) {
+      pushBlenders(recorder, blender.children);
+    }
+    recorder.pushBlender(blender.type, blender.props, blender.children.length);
+  });
+};
+
 const pushMaskFilters = (recorder: BaseRecorder, maskFilters: Node<any>[]) => {
   if (maskFilters.length > 0) {
     recorder.pushBlurMaskFilter(maskFilters[maskFilters.length - 1].props);
@@ -190,13 +199,20 @@ const pushMaskFilters = (recorder: BaseRecorder, maskFilters: Node<any>[]) => {
 const pushPaints = (recorder: BaseRecorder, paints: Node<any>[]) => {
   paints.forEach((paint) => {
     recorder.savePaint(paint.props, true);
-    const { colorFilters, maskFilters, shaders, imageFilters, pathEffects } =
-      sortNodeChildren(paint);
+    const {
+      colorFilters,
+      maskFilters,
+      shaders,
+      imageFilters,
+      pathEffects,
+      blenders,
+    } = sortNodeChildren(paint);
     pushColorFilters(recorder, colorFilters);
     pushImageFilters(recorder, imageFilters);
     pushMaskFilters(recorder, maskFilters);
     pushShaders(recorder, shaders);
     pushPathEffects(recorder, pathEffects);
+    pushBlenders(recorder, blenders);
     recorder.restorePaintDeclaration();
   });
 };
@@ -227,6 +243,7 @@ const visitNode = (recorder: BaseRecorder, node: Node<any>) => {
     imageFilters,
     pathEffects,
     paints,
+    blenders,
   } = sortNodeChildren(node);
   const paint = processPaint(props);
   const shouldPushPaint =
@@ -235,13 +252,15 @@ const visitNode = (recorder: BaseRecorder, node: Node<any>) => {
     maskFilters.length > 0 ||
     imageFilters.length > 0 ||
     pathEffects.length > 0 ||
-    shaders.length > 0;
+    shaders.length > 0 ||
+    blenders.length > 0;
   if (shouldPushPaint) {
     recorder.savePaint(paint ?? {}, false);
     pushColorFilters(recorder, colorFilters);
     pushImageFilters(recorder, imageFilters);
     pushMaskFilters(recorder, maskFilters);
     pushShaders(recorder, shaders);
+    pushBlenders(recorder, blenders);
     pushPathEffects(recorder, pathEffects);
     // For mixed nodes like BackdropFilters we don't materialize the paint
     if (node.type === NodeType.BackdropFilter) {

@@ -31,7 +31,13 @@ import type {
 } from "../../dom/types";
 import type { AnimatedProps } from "../../renderer";
 import { isSharedValue } from "../utils";
-import { isColorFilter, isImageFilter, isPathEffect, isShader } from "../Node";
+import {
+  isBlender,
+  isColorFilter,
+  isImageFilter,
+  isPathEffect,
+  isShader,
+} from "../Node";
 import type { SkPaint, BaseRecorder } from "../../skia/types";
 
 import { CommandType } from "./Core";
@@ -166,6 +172,17 @@ export class Recorder implements BaseRecorder {
       throw new Error("Invalid color filter type: " + shaderType);
     }
     this.add({ type: CommandType.PushShader, shaderType, props, children });
+  }
+
+  pushBlender(
+    blenderType: NodeType,
+    props: AnimatedProps<unknown>,
+    children: number
+  ): void {
+    if (!isBlender(blenderType)) {
+      throw new Error("Invalid blender type: " + blenderType);
+    }
+    this.add({ type: CommandType.PushBlender, props });
   }
 
   pushBlurMaskFilter(props: AnimatedProps<BlurMaskFilterProps>) {

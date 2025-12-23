@@ -75,4 +75,6 @@ export const enum NodeType {
   Skottie = "skSkottie",
   // ImageFilter
   ImageFilter = "skImageFilter",
+  // Blender
+  Blender = "skBlender",
 }

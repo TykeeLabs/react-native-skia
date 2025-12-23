@@ -1,3 +1,4 @@
+import type { BlenderFactory } from "./Blender";
 import type { ImageFilterFactory } from "./ImageFilter";
 import type { PathFactory } from "./Path";
 import type { ColorFilterFactory } from "./ColorFilter";
@@ -108,4 +109,5 @@ export interface Skia {
   Context(surface: bigint, width: number, height: number): SkiaContext;
   NativeBuffer: NativeBufferFactory;
   Recorder(): JsiRecorder;
+  Blender: BlenderFactory;
 }

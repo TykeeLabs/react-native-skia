@@ -36,6 +36,7 @@ export enum CommandType {
   PushImageFilter,
   PushPathEffect,
   PushShader,
+  PushBlender,
   ComposeColorFilter,
   ComposeImageFilter,
   ComposePathEffect,

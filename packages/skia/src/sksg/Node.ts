@@ -6,6 +6,11 @@ export interface Node<Props = unknown> {
   children: Node[];
 }
 
+export const isBlender = (type: NodeType) => {
+  "worklet";
+  return type === NodeType.Blender;
+};
+
 export const isColorFilter = (type: NodeType) => {
   "worklet";
   return (
@@ -69,6 +74,7 @@ export const sortNodeChildren = (parent: Node) => {
   const pathEffects: Node[] = [];
   const drawings: Node[] = [];
   const paints: Node[] = [];
+  const blenders: Node[] = [];
   parent.children.forEach((node) => {
     if (isColorFilter(node.type)) {
       colorFilters.push(node);
@@ -90,6 +96,8 @@ export const sortNodeChildren = (parent: Node) => {
         node.type = NodeType.Blend;
         shaders.push(node);
       }
+    } else if (isBlender(node.type)) {
+      blenders.push(node);
     } else {
       drawings.push(node);
     }
@@ -102,5 +110,6 @@ export const sortNodeChildren = (parent: Node) => {
     pathEffects,
     imageFilters,
     paints,
+    blenders,
   };
 };

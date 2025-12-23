@@ -22,6 +22,11 @@ export interface ShaderProps extends TransformProps, ChildrenProps {
   uniforms: Uniforms;
 }
 
+export interface BlenderProps {
+  source: SkRuntimeEffect;
+  uniforms: Uniforms;
+}
+
 export interface ImageShaderProps extends TransformProps, Partial<RectCtor> {
   tx: SkEnum<typeof TileMode>;
   ty: SkEnum<typeof TileMode>;

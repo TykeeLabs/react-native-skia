@@ -17,14 +17,15 @@
 namespace RNSkia {
 namespace jsi = facebook::jsi;
 
-class JsiSkBlender : public JsiSkWrappingSharedPtrHostObject<SkBlender> {
+class JsiSkBlender : public JsiSkWrappingSkPtrHostObject<SkBlender> {
 public:
   EXPORT_JSI_API_TYPENAME(JsiSkBlender, Blender)
+  JSI_EXPORT_FUNCTIONS()
 
   JsiSkBlender(std::shared_ptr<RNSkPlatformContext> context,
                sk_sp<SkBlender> blender)
-      : JsiSkWrappingSharedPtrHostObject<SkBlender>(std::move(context),
-                                                    std::move(blender)) {}
+      : JsiSkWrappingSkPtrHostObject<SkBlender>(std::move(context),
+                                                std::move(blender)) {}
 
   size_t getMemoryPressure() const override { return 1024 * 1024; }
 

@@ -6,6 +6,7 @@ import type { SkRuntimeEffect } from "../types/RuntimeEffect/RuntimeEffect";
 import { HostObject } from "./Host";
 import { JsiSkMatrix } from "./JsiSkMatrix";
 import { JsiSkShader } from "./JsiSkShader";
+import { JsiSkBlender } from "./JsiSkBlender";
 
 export class JsiSkRuntimeEffect
   extends HostObject<RuntimeEffect, "RuntimeEffect">
@@ -50,6 +51,10 @@ export class JsiSkRuntimeEffect
           : localMatrix
       )
     );
+  }
+
+  makeBlender(uniforms: number[]) {
+    return new JsiSkBlender(this.CanvasKit, this.ref.makeBlender(uniforms));
   }
 
   getUniform(index: number) {

@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 
+#include "JsiSkBlender.h"
 #include "JsiSkHostObjects.h"
 #include "JsiSkMatrix.h"
 #include "JsiSkShader.h"
@@ -85,6 +86,16 @@ public:
     auto shaderObj =
         std::make_shared<JsiSkShader>(getContext(), std::move(shader));
     return JSI_CREATE_HOST_OBJECT_WITH_MEMORY_PRESSURE(runtime, shaderObj,
+                                                       getContext());
+  }
+
+  JSI_HOST_FUNCTION(makeBlender) {
+    auto uniforms = castUniforms(runtime, arguments[0]);
+    auto blender = getObject()->makeBlender(std::move(uniforms));
+
+    auto blenderObj =
+        std::make_shared<JsiSkBlender>(getContext(), std::move(blender));
+    return JSI_CREATE_HOST_OBJECT_WITH_MEMORY_PRESSURE(runtime, blenderObj,
                                                        getContext());
   }
 

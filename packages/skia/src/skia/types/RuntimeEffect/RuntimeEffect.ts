@@ -1,6 +1,7 @@
 import type { SkShader } from "../Shader";
 import type { SkJSIInstance } from "../JsiInstance";
 import type { SkMatrix } from "../Matrix";
+import type { SkBlender } from "../Blender";
 
 export interface SkSLUniform {
   columns: number;
@@ -34,6 +35,8 @@ export interface SkRuntimeEffect extends SkJSIInstance<"RuntimeEffect"> {
     children?: SkShader[],
     localMatrix?: SkMatrix
   ): SkShader;
+
+  makeBlender(uniforms: number[]): SkBlender;
 
   /**
    * Returns the nth uniform from the effect.

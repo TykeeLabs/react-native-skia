@@ -14,10 +14,9 @@ namespace RNSkia {
 namespace jsi = facebook::jsi;
 
 class JsiSkRuntimeEffectFactory : public JsiSkHostObject {
-public:
-  JSI_HOST_FUNCTION(Make) {
-    auto sksl = arguments[0].asString(runtime).utf8(runtime);
-    auto result = SkRuntimeEffect::MakeForShader(SkString(sksl));
+
+  jsi::Value wrap_shader_result(jsi::Runtime &runtime,
+                                SkRuntimeEffect::Result result) {
     auto effect = result.effect;
     auto errorText = result.errorText;
     if (!effect) {
@@ -32,13 +31,28 @@ public:
                                                        getContext());
   }
 
+public:
+  JSI_HOST_FUNCTION(Make) {
+    auto sksl = arguments[0].asString(runtime).utf8(runtime);
+    auto result = SkRuntimeEffect::MakeForShader(SkString(sksl));
+    return wrap_shader_result(runtime, result);
+  }
+
+  JSI_HOST_FUNCTION(MakeForBlender) {
+    auto sksl = arguments[0].asString(runtime).utf8(runtime);
+    auto result = SkRuntimeEffect::MakeForBlender(SkString(sksl));
+    return wrap_shader_result(runtime, result);
+  }
+
   size_t getMemoryPressure() const override { return 1024; }
 
   std::string getObjectType() const override {
     return "JsiSkRuntimeEffectFactory";
   }
 
-  JSI_EXPORT_FUNCTIONS(JSI_EXPORT_FUNC(JsiSkRuntimeEffectFactory, Make))
+  JSI_EXPORT_FUNCTIONS(JSI_EXPORT_FUNC(JsiSkRuntimeEffectFactory, Make),
+                       JSI_EXPORT_FUNC(JsiSkRuntimeEffectFactory,
+                                       MakeForBlender));
 
   explicit JsiSkRuntimeEffectFactory(
       std::shared_ptr<RNSkPlatformContext> context)

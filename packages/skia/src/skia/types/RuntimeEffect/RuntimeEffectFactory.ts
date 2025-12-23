@@ -9,4 +9,5 @@ export interface RuntimeEffectFactory {
    */
   Make: (sksl: string) => SkRuntimeEffect | null;
   //Make(sksl: string, callback?: (err: string) => void): RuntimeEffect | null;
+  MakeForBlender: (sksl: string) => SkRuntimeEffect | null;
 }

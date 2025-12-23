@@ -20,4 +20,12 @@ export class JsiSkRuntimeEffectFactory
     }
     return new JsiSkRuntimeEffect(this.CanvasKit, re, sksl);
   }
+
+  MakeForBlender(sksl: string) {
+    const re = this.CanvasKit.RuntimeEffect.MakeForBlender(sksl);
+    if (re === null) {
+      return null;
+    }
+    return new JsiSkRuntimeEffect(this.CanvasKit, re, sksl);
+  }
 }

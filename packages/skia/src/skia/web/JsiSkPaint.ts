@@ -13,6 +13,7 @@ import type {
   SkMaskFilter,
   SkPathEffect,
 } from "../types";
+import type { SkBlender } from "../types/Blender";
 
 import { HostObject, getEnum } from "./Host";
 import { JsiSkColorFilter } from "./JsiSkColorFilter";
@@ -20,6 +21,7 @@ import { JsiSkImageFilter } from "./JsiSkImageFilter";
 import { JsiSkMaskFilter } from "./JsiSkMaskFilter";
 import { JsiSkPathEffect } from "./JsiSkPathEffect";
 import { JsiSkShader } from "./JsiSkShader";
+import { JsiSkBlender } from "./JsiSkBlender";
 
 export class JsiSkPaint extends HostObject<Paint, "Paint"> implements SkPaint {
   constructor(CanvasKit: CanvasKit, ref: Paint) {
@@ -120,5 +122,10 @@ export class JsiSkPaint extends HostObject<Paint, "Paint"> implements SkPaint {
 
   setStyle(style: PaintStyle) {
     this.ref.setStyle({ value: style });
+  }
+
+  setBlender(blender: SkBlender | null): void {
+    // @ts-expect-error CanvasKit types don't allow null, but the docstring says it does
+    this.ref.setBlender(blender ? JsiSkBlender.fromValue(blender) : null);
   }
 }

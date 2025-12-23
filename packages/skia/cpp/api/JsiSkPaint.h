@@ -5,6 +5,7 @@
 
 #include <jsi/jsi.h>
 
+#include "JsiSkBlender.h"
 #include "JsiSkColor.h"
 #include "JsiSkColorFilter.h"
 #include "JsiSkHostObjects.h"
@@ -168,6 +169,14 @@ public:
                           ? nullptr
                           : JsiSkPathEffect::fromValue(runtime, arguments[0]);
     getObject()->setPathEffect(std::move(pathEffect));
+    return jsi::Value::undefined();
+  }
+
+  JSI_HOST_FUNCTION(setBlender) {
+    auto blender = arguments[0].isNull() || arguments[0].isUndefined()
+                       ? nullptr
+                       : JsiSkBlender::fromValue(runtime, arguments[0]);
+    getObject()->setBlender(std::move(blender));
     return jsi::Value::undefined();
   }
 

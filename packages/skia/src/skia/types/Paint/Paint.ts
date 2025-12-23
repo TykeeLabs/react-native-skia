@@ -5,6 +5,7 @@ import type { SkColor } from "../Color";
 import type { SkPathEffect } from "../PathEffect";
 import type { SkJSIInstance } from "../JsiInstance";
 import type { SkShader } from "../Shader";
+import type { SkBlender } from "../Blender";
 
 import type { BlendMode } from "./BlendMode";
 
@@ -169,4 +170,11 @@ export interface SkPaint extends SkJSIInstance<"Paint"> {
    * @param style
    */
   setStyle(style: PaintStyle): void;
+
+  /** Sets the current blender. A nullptr blender signifies the default SrcOver behavior.
+   *
+   *  For convenience, you can call setBlendMode() if the blend effect can be expressed
+   *  as one of those values.
+   */
+  setBlender(blender: SkBlender | null): void;
 }
